@@ -20,7 +20,10 @@ android_app {
     ],
     platform_apis: true,
     certificate: "platform",
-    jni_libs: ["libnfc_nci_jni"],
+    jni_libs: [
+        "libnfc_sec_jni",
+        "libnfc-sec"
+    ],
     static_libs: [
         "android.se.omapi-V1-java",
         "androidx.annotation_annotation",
