@@ -42,7 +42,7 @@ public class NativeNfcManager implements DeviceHost {
     static final String DRIVER_NAME = "android-nci";
 
     static {
-        System.loadLibrary("nfc_sec_jni");
+        System.loadLibrary("nfc_nci_jni");
     }
 
     /* Native structure */
