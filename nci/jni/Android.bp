@@ -31,10 +31,10 @@ cc_library_shared {
         "libcutils",
         "libutils",
         "liblog",
-        "libnfc-nci",
+        "libnfc-nci", // to be built manually!
         "libchrome",
         "libbase",
-        "libstatslog_nfc",
+        "libstatslog_nfc", // to be built manually(?)
     ],
 
     static_libs: [

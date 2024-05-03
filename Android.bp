@@ -41,7 +41,7 @@ android_app {
     // TODO: This needs to change once framework-nfc is ready.
     // min_sdk_version: "VanillaIceCream",
     // sdk_version: "module_current",
-    jni_libs: ["libnfc_nci_jni"],
+    jni_libs: ["libnfc_nci_jni"], // replace with sec, imported into vendor tree as a module
     libs: [
         "framework-annotations-lib",
         "framework-bluetooth",
