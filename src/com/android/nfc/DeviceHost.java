@@ -227,9 +227,4 @@ public interface DeviceHost {
     * Set NFCC power state by sending NFCEE_POWER_AND_LINK_CNTRL_CMD
     */
     void setNfceePowerAndLinkCtrl(boolean enable);
-
-    /**
-     * Enable or Disable the Power Saving Mode based on flag
-     */
-    boolean setPowerSavingMode(boolean flag);
 }

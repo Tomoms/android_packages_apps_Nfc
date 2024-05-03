@@ -107,13 +107,6 @@ public class NativeNfcManager implements DeviceHost {
         doFactoryReset();
     }
 
-    private native boolean doSetPowerSavingMode(boolean flag);
-
-    @Override
-    public boolean setPowerSavingMode(boolean flag) {
-        return doSetPowerSavingMode(flag);
-    }
-
     private native void doShutdown();
 
     @Override
