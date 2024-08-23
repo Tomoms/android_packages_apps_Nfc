@@ -1816,7 +1816,9 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback 
                     } catch (NoSuchElementException e) {
                         Log.e(TAG, "Change Tech Binder was never registered.");
                     }
-                } else {
+                } else if (!(pollTech == NfcAdapter.FLAG_USE_ALL_TECH && // Do not call for
+                                                                         // resetDiscoveryTech
+                        listenTech == NfcAdapter.FLAG_USE_ALL_TECH)) {
                     try {
                         mDeviceHost.setDiscoveryTech(pollTech, listenTech);
                         binder.linkToDeath(mDiscoveryTechDeathRecipient, 0);
@@ -1824,6 +1826,8 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback 
                         Log.e(TAG, "Remote binder has already died.");
                         return;
                     }
+                } else {
+                    return;
                 }
 
                 applyRouting(true);
@@ -3341,6 +3345,8 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback 
                 }
 
                 case MSG_NDEF_TAG:
+                    if (!isNfcEnabled())
+                        break;
                     if (DBG) Log.d(TAG, "Tag detected, notifying applications");
                     TagEndpoint tag = (TagEndpoint) msg.obj;
                     byte[] debounceTagUid;
@@ -3834,7 +3840,7 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback 
                     }
                 }
                 int dispatchResult = mNfcDispatcher.dispatchTag(tag);
-                if (dispatchResult == NfcDispatcher.DISPATCH_FAIL && !mInProvisionMode) {
+                if (dispatchResult == NfcDispatcher.DISPATCH_FAIL) {
                     if (DBG) Log.d(TAG, "Tag dispatch failed");
                     unregisterObject(tagEndpoint.getHandle());
                     if (mPollDelayTime > NO_POLL_DELAY) {
@@ -3859,7 +3865,8 @@ public class NfcService implements DeviceHostListener, ForegroundUtils.Callback 
                     } else {
                         Log.d(TAG, "Keep presence checking.");
                     }
-                    if (mScreenState == ScreenStateHelper.SCREEN_STATE_ON_UNLOCKED && mNotifyDispatchFailed) {
+                    if (mScreenState == ScreenStateHelper.SCREEN_STATE_ON_UNLOCKED
+                            && mNotifyDispatchFailed && !mInProvisionMode) {
                         if (!sToast_debounce) {
                             Toast.makeText(mContext, R.string.tag_dispatch_failed,
                                            Toast.LENGTH_SHORT).show();
